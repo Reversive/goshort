@@ -7,6 +7,7 @@ import (
 	"goshort/internal/persistance"
 	"goshort/internal/server"
 	"goshort/internal/service"
+	"log"
 	"net/http"
 )
 
@@ -25,7 +26,12 @@ func (handler *UrlHandler) ShortenUrlHandler(w http.ResponseWriter, req *http.Re
 		return
 	}
 
-	defer req.Body.Close()
+	defer func() {
+		err := req.Body.Close()
+		if err != nil {
+			log.Printf("error closing request body: %v", err)
+		}
+	}()
 
 	var bodyDto dtos.PostUrlDTO
 	err := json.NewDecoder(req.Body).Decode(&bodyDto)
