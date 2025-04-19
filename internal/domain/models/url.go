@@ -1,6 +1,6 @@
-package models 
+package models
 
 type Url struct {
-    Short    string
-    Original string
+	Short    string
+	Original string
 }

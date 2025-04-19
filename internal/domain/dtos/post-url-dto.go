@@ -1,5 +1,5 @@
-package dtos 
+package dtos
 
 type PostUrlDTO struct {
-    URL string
+	URL string
 }

@@ -11,7 +11,7 @@ import (
 )
 
 type UrlHandler struct {
-    Service service.UrlService
+	Service service.UrlService
 }
 
 func (handler *UrlHandler) ShortenUrlHandler(w http.ResponseWriter, req *http.Request) {
@@ -29,25 +29,25 @@ func (handler *UrlHandler) ShortenUrlHandler(w http.ResponseWriter, req *http.Re
 
 	var bodyDto dtos.PostUrlDTO
 	err := json.NewDecoder(req.Body).Decode(&bodyDto)
-    if err != nil { 
-        server.HandleError(http.StatusBadRequest, err, req.RequestURI, w)
-        return
-    }
-    
-    url, err := handler.Service.HandlePostUrl(bodyDto.URL)
-    
-    if err != nil {
-        if errors.Is(err, service.ErrUrlCannotBeEmpty) {
-            server.HandleError(http.StatusBadRequest, err, req.RequestURI, w)
-        } else if errors.Is(err, persistance.ErrNotFound) {
-            server.HandleError(http.StatusNotFound, err, req.RequestURI, w)
-        }
-        return
-    }
+	if err != nil {
+		server.HandleError(http.StatusBadRequest, err, req.RequestURI, w)
+		return
+	}
+
+	url, err := handler.Service.HandlePostUrl(bodyDto.URL)
+
+	if err != nil {
+		if errors.Is(err, service.ErrUrlCannotBeEmpty) {
+			server.HandleError(http.StatusBadRequest, err, req.RequestURI, w)
+		} else if errors.Is(err, persistance.ErrNotFound) {
+			server.HandleError(http.StatusNotFound, err, req.RequestURI, w)
+		}
+		return
+	}
 
 	w.Header().Set(
 		"Location",
-        url,
+		url,
 	)
 	w.WriteHeader(http.StatusCreated)
 }

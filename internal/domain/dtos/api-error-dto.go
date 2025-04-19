@@ -1,7 +1,7 @@
 package dtos
 
 type ApiErrorDto struct {
-    Code  int
-    Error string
-    Path  string
+	Code  int
+	Error string
+	Path  string
 }

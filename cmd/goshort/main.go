@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
-    var router = server.NewRouter()
-    var urlRepo = persistance.New()
-    var urlService = service.UrlService{UrlRepo: urlRepo}
-    var urlHandler = handler.UrlHandler{Service: urlService}
+	var router = server.NewRouter()
+	var urlRepo = persistance.New()
+	var urlService = service.UrlService{UrlRepo: urlRepo}
+	var urlHandler = handler.UrlHandler{Service: urlService}
 
-    router.HandleFunc("/urls", urlHandler.ShortenUrlHandler)
-    log.Fatal(http.ListenAndServe(":8080", router))
+	router.HandleFunc("/urls", urlHandler.ShortenUrlHandler)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
