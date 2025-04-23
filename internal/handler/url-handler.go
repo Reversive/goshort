@@ -12,7 +12,13 @@ import (
 )
 
 type UrlHandler struct {
-	Service service.UrlService
+	Service *service.UrlService
+}
+
+func NewUrlHandler(service *service.UrlService) *UrlHandler {
+	return &UrlHandler{
+		Service: service,
+	}
 }
 
 func (handler *UrlHandler) ShortenUrlHandler(w http.ResponseWriter, req *http.Request) {

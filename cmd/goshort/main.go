@@ -12,8 +12,8 @@ import (
 func main() {
 	var router = server.NewRouter()
 	var urlRepo = persistance.New()
-	var urlService = service.UrlService{UrlRepo: urlRepo}
-	var urlHandler = handler.UrlHandler{Service: urlService}
+	var urlService = service.NewUrlService(urlRepo)
+	var urlHandler = handler.NewUrlHandler(urlService)
 
 	router.HandleFunc("/urls", urlHandler.ShortenUrlHandler)
 	log.Fatal(http.ListenAndServe(":8080", router))
