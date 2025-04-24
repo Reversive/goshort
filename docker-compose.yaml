@@ -1,0 +1,30 @@
+services:
+  psql:
+    image: "postgres:latest"
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=goshort
+      - POSTGRES_USER=root
+      - POSTGRES_DB=goshort
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h localhost"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      psql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      PSQL_URL: "postgres://root:goshort@psql:5432/goshort?sslmode=disable"
+
+volumes:
+  pgdata:

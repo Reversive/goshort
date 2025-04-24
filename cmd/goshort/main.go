@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"goshort/internal/handler"
 	"goshort/internal/persistance"
 	"goshort/internal/server"
@@ -11,7 +12,13 @@ import (
 
 func main() {
 	var router = server.NewRouter()
-	var urlRepo = persistance.New()
+	urlRepo, err := persistance.NewPsqlRepository()
+	if err != nil {
+		fmt.Printf("error while connecting to the db: %v", err.Error())
+		return
+	}
+	defer urlRepo.DbPool.Close()
+
 	var urlService = service.NewUrlService(urlRepo)
 	var urlHandler = handler.NewUrlHandler(urlService)
 

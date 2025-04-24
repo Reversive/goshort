@@ -8,23 +8,23 @@ import (
 
 var ErrNotFound = errors.New("short code not found")
 
-type UrlRepositoryImpl struct {
+type UrlRepositoryStackImpl struct {
 	Store map[string]string
 	Mtx   sync.RWMutex
 }
 
-func New() *UrlRepositoryImpl {
-	return &UrlRepositoryImpl{Store: make(map[string]string)}
+func NewStackRepository() *UrlRepositoryStackImpl {
+	return &UrlRepositoryStackImpl{Store: make(map[string]string)}
 }
 
-func (u *UrlRepositoryImpl) Save(url models.Url) (string, error) {
+func (u *UrlRepositoryStackImpl) Save(url models.Url) (string, error) {
 	u.Mtx.Lock()
 	defer u.Mtx.Unlock()
 	u.Store[url.Short] = url.Original
 	return url.Short, nil
 }
 
-func (u *UrlRepositoryImpl) Get(short string) (string, error) {
+func (u *UrlRepositoryStackImpl) Get(short string) (string, error) {
 	u.Mtx.RLock()
 	defer u.Mtx.RUnlock()
 	original, ok := u.Store[short]

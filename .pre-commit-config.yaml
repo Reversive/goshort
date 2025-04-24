@@ -21,6 +21,7 @@ repos:
         types: [go]
     -   id: go-mod-tidy
         name: go mod tidy
-        entry: go mod tidy -v
         language: system
-        files: ^go\.mod$
+        entry: bash -c 'go mod tidy'
+        files: ^go\.(mod|sum)$
+        pass_filenames: false
